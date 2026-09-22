@@ -111,6 +111,26 @@ while IFS= read -r -d '' file; do
 done < <(find dist/platforms -type f -name '*.ps1' -print0)
 
 echo
+echo "== Checking for regsvr32 with no /s and no kill afterwards (PowerShell) =="
+
+while IFS= read -r -d '' file; do
+  code_only=$(grep -vE '^\s*#' "$file")
+  if grep -qE '(^|[^a-zA-Z0-9_-])regsvr32([[:space:]]|$)' <<< "$code_only"; then
+    if grep -qE '(^|[^a-zA-Z0-9_-])regsvr32[[:space:]]+/[sS]([[:space:]]|$)' <<< "$code_only"; then
+      continue
+    fi
+    if grep -qE 'Stop-Process' <<< "$code_only" && grep -qE 'regsvr32' <<< "$(grep -B0 -A20 'regsvr32' <<< "$code_only")"; then
+      if grep -A20 -E '(^|[^a-zA-Z0-9_-])regsvr32([[:space:]]|$)' <<< "$code_only" | grep -qE "Get-Process[[:space:]]+-Name[[:space:]]+regsvr32"; then
+        continue
+      fi
+    fi
+    echo "FAIL: $file calls regsvr32 without /s and never stops it - it waits on a modal dialog forever and keeps the container alive"
+    grep -nE '(^|[^a-zA-Z0-9_-])regsvr32([[:space:]]|$)' <<< "$code_only"
+    fail=1
+  fi
+done < <(find dist/platforms -type f -name '*.ps1' -print0)
+
+echo
 if [ "$fail" -ne 0 ]; then
   echo "One or more platform script checks failed - see FAIL lines above."
   exit 1
