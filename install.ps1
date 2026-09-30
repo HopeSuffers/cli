@@ -7,7 +7,7 @@
 
 $ErrorActionPreference = 'Stop'
 
-$Repo = "game-ci/cli"
+$Repo = "HopeSuffers/cli"
 $InstallDir = if ($env:GAME_CI_INSTALL) { $env:GAME_CI_INSTALL } else { Join-Path $env:USERPROFILE ".game-ci\bin" }
 # Releases ship a .zip, not a bare .exe: the binary is not self-contained, it
 # resolves its own static assets (default-build-script/, platforms/*,

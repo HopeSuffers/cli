@@ -41,7 +41,7 @@
 
 set -euo pipefail
 
-CLI_REPO="game-ci/cli"
+CLI_REPO="HopeSuffers/cli"
 VERSION="${1:-latest}"
 DEST_DIR="${2:-}"
 

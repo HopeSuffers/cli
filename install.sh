@@ -21,7 +21,7 @@
 
 set -e
 
-REPO="game-ci/cli"
+REPO="HopeSuffers/cli"
 INSTALL_DIR="${GAME_CI_INSTALL:-$HOME/.game-ci/bin}"
 VERSION="${GAME_CI_VERSION:-latest}"
 

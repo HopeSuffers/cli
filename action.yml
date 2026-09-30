@@ -62,7 +62,7 @@ runs:
       run: |
         $ErrorActionPreference = 'Stop'
 
-        $repo = 'game-ci/cli'
+        $repo = 'HopeSuffers/cli'
         $version = '${{ inputs.version }}'
         $actionRef = '${{ github.action_ref }}'
 
